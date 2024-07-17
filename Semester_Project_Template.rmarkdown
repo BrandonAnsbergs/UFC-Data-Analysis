@@ -1,0 +1,88 @@
+---
+title: "Most successful method of winning in UFC"
+author: "Brandon Ansbergs"
+format:
+  html:
+    self-contained: true
+    code-fold: true
+warning: false
+---
+
+
+
+# Introduction
+
+Mixed martial arts, particularly the Ultimate Fighting Championship (UFC), provides an intriguing arena for analyzing fighter performance metrics. This study aims to investigate the relationship between different methods of winning in UFC fights and the success of fighters. By examining factors such as knockouts, submissions, and decision victories, we seek to identify patterns and preferences among fighters and assess the effectiveness of various winning strategies.
+
+# Design the Study
+
+The population of interest encompasses all UFC fighters, and the research question focuses on uncovering the nature of the relationship between winning methods and fighter success. This analysis will utilize both quantitative and categorical data, including match outcomes and specific winning techniques. The chosen statistical tool for analysis is the chi-squared test for independence, enabling us to explore the associations between winning methods and fighter success rates, and specifically which corner they win in (Red or Blue).
+
+# Collect the Data
+
+The dataset for this study was obtained from Kaggle, providing comprehensive records of UFC fights, including details on winning methods and fighter performance metrics.This data set contains data from when the UFC started (1993) to a recent UFC card of 2023.
+
+# Describe/Summarize the Data
+
+
+```{r}
+library(tidyverse)
+library(mosaic)
+library(rio)
+library(ggplot2)
+library(ggrepel)
+library(pander)
+
+# Read the data
+temp<- import("C:\\Users\\bansb\\OneDrive\\Desktop\\MATH 221D\\UFC_ most strikes landed by fighters worldwide 2022 _ Statista_files\\UFC_data.csv")
+temp <- temp %>% filter(win_by != "Other")
+
+# Summarize the data
+head(temp)
+```
+
+```{r, fig.width=12}
+# Visualize the distribution of wins by method
+ggplot(temp)+
+  geom_bar(aes(x = win_by, fill = Corner), position = position_dodge()) +
+  scale_fill_manual(values=c("steelblue", "firebrick1"))
+```
+
+
+
+# Make Inference
+
+
+
+```{r}
+# Perform chi-squared test for independence
+table <- table(temp$win_by, temp$Corner)
+ufc_chi <- chisq.test(table)
+pander(ufc_chi$observed)
+```
+
+```{r}
+ufc_chi
+```
+
+```{r}
+pander(ufc_chi$expected)
+```
+
+The chi-squared test results reveal a statistically significant association between winning method and fighter success in UFC matches (χ² = 217.5, df = 8, p < 2.2e-16), indicating that the method by which a fighter achieves victory is not independent of their overall success in UFC bouts.
+
+Upon examining the observed counts in the contingency table, several noteworthy patterns emerge. Victories by submission and decision (unanimous, majority, and split) are more prevalent in the red corner, while knockouts (KO/TKO) exhibit a more balanced distribution between the red and blue corners. Conversely, outcomes such as overturns and TKO due to doctor's stoppage are primarily associated with the blue corner. This disparity suggests potential biases or strategic advantages associated with corner assignment, wherein fighters in the red corner may have a higher likelihood of securing certain types of wins.
+
+Furthermore, comparing the observed and expected counts underscores the magnitude of discrepancies across different winning methods and corner assignments. In particular, deviations from expected frequencies are most pronounced in categories where one corner dominates, such as decisions (unanimous, majority, and split) and submissions. These deviations highlight the influence of contextual factors, such as corner assignment strategies and fighter rankings, on the distribution of winning methods in UFC matches. Further investigation into these factors is warranted to gain deeper insights into the dynamics of fighter success and the outcomes of UFC bouts.
+
+# Conclusion
+
+The chi-squared test results suggest a significant association between winning method and fighter success in UFC matches. However, further examination reveals intriguing insights that warrant consideration. 
+
+Upon analyzing the contingency table, it becomes evident that certain winning methods are disproportionately favored by fighters assigned to the blue corner. This disparity raises questions about the independence of winning method and corner assignment. Traditionally, the blue corner is assigned to fighters perceived as underdogs or less experienced, while the red corner is reserved for favorites or higher-ranked competitors. This inherent bias in corner assignment could influence the observed relationships and skew the results of the chi-squared test.
+
+Additionally, the prevalence of decision victories in the red corner may indicate a strategic advantage or a predisposition towards judges' favoritism. Fighters in the red corner may benefit from subconscious biases or perceived advantages, contributing to their higher success rates in decision-based outcomes.
+
+Moreover, the presence of categories containing only blue suggests potential confounding factors or incomplete data, further complicating the interpretation of results. It is imperative to acknowledge these nuances and exercise caution when drawing conclusions from the analysis.
+
+In conclusion, while the chi-squared test highlights statistically significant associations between winning methods and fighter success in UFC matches, the presence of confounding variables and biases inherent in corner assignments underscore the need for more comprehensive analyses and considerations of contextual factors. Future research should explore these intricacies to provide a deeper understanding of the dynamics influencing fighter performance and success in mixed martial arts competitions.
