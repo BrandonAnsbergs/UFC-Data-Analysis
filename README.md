@@ -1,7 +1,5 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
-
 As a software engineer, I aim to enhance my data analysis skills by exploring the performance metrics of UFC fighters. This project investigates the relationship between different methods of winning in UFC fights and fighter success.
 
 The dataset used for this analysis was obtained from [Kaggle](https://www.kaggle.com/) and includes comprehensive records of UFC fights from 1993 to 2023, detailing winning methods and fighter performance metrics.
